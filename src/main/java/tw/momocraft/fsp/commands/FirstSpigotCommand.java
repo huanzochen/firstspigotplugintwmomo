@@ -1,16 +1,17 @@
 package tw.momocraft.fsp.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import tw.momocraft.fsp.utils.Common;
 
-public class FirstSpigotCommand extends Command{
+public class FirstSpigotCommand extends PlayerCommand{
 
 	public FirstSpigotCommand() {
 		super("firstspigotcommand");
@@ -23,37 +24,50 @@ public class FirstSpigotCommand extends Command{
 	}
 
 	@Override
-	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+	protected void run(Player player, String[] args) {
+		if(!player.hasPermission("your.cool.permission")) {
+			Common.tell(player, "&cYou lack the proper permission, sorry paw :(");
 
-		if(!(sender instanceof Player)) {
-			Common.tell(sender, "&e你必須是個玩家!");
-
-			return false;
-		}
-
-		if(!sender.hasPermission("your.cool.permission")) {
-			Common.tell(sender, "&cYou lack the proper permission, sorry paw :(");
-
-			return false;
+			return;
 		}
 
 		if (args.length != 1) {
-			Common.tell(sender, "&ePlease type your coolname after the command!");
+			Common.tell(player, "&ePlease type your coolname after the command!");
 
-			return false;
+			return;
 		}
 
 		final String name = args[0];
+		final Material mat = Material.getMaterial(name);
 
-		Common.tell(sender, "Your cool name is" + name);
+		if(mat == null) {
+			Common.tell(player, "&cThe Material " + name + " does not exist.");
 
-		final Player player = (Player) sender;
-		player.getInventory().addItem(new ItemStack(Material.DIAMOND, 2));
+			return;
+		}
 
-		return true;
-
-
-
+		player.getInventory().addItem(new ItemStack(mat, 1));
+		Common.tell(player, "&6You have been given 1 piece of " + name);
 	}
+
+	@Override
+	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		if(sender.hasPermission("your.cool.permission") && args.length == 1) {
+			final String arg = args[0];
+			final List<String> tab = new ArrayList<>();
+
+			for (final Material m : Material.values()) {
+				if(m.toString().startsWith(arg.toUpperCase())) {
+					tab.add(m.toString());
+				}
+			}
+			return tab;
+		}
+
+		return super.tabComplete(sender, alias, args);
+	}
+
+
 
 }

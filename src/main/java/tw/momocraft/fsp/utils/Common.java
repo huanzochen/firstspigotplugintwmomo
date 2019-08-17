@@ -11,6 +11,12 @@ import net.md_5.bungee.api.ChatColor;
 
 public class Common {
 
+	public static void tell (CommandSender toWhom, String ... messages) {
+		for(final String message : messages) {
+			tell(toWhom, message);
+		}
+	}
+
 	public static void tell (CommandSender toWhom, String message) {
 		toWhom.sendMessage(colorize(message));
 	}
