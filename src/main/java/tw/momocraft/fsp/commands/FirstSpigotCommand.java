@@ -19,8 +19,6 @@ public class FirstSpigotCommand extends PlayerCommand{
 		setAliases(Arrays.asList("fsc", "fsp"));
 		setDescription("a example command");
 
-
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
