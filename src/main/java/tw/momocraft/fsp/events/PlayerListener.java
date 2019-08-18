@@ -35,12 +35,15 @@ public class PlayerListener implements Listener {
 
 		}
 	}
+
 	/*
 	new BukkitRunnable() {
+
 		@Override
 		public void run() {
 
 		}
-	}.runTaskLater(plugin, delay);
+	}.runTaskLater(FirstSpigotPlugin.getInstance(), 1);
 	 */
+
 }
